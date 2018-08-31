@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>flv.js demo</title>
+
+    <style>
+        .mainContainer {
+            display: block;
+            width: 1024px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .urlInput {
+            display: block;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .centeredVideo {
+            display: block;
+            width: 100%;
+            height: 576px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: auto;
+        }
+
+        .controls {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 8px;
+            margin-bottom: 10px;
+        }
+
+        .logcatBox {
+            border-color: #CCCCCC;
+            font-size: 11px;
+            font-family: Menlo, Consolas, monospace;
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="mainContainer">
+        <video name="videoElement" class="centeredVideo" id="videoElement" controls width="1024" height="576" autoplay>
+            Your browser is too old which doesn't support HTML5 video.
+        </video>
+
+    </div>
+
+    <script src="./flv.js?v=2"></script>
+    
+    <script>
+         if (flvjs.isSupported()) {
+            startVideo()
+        }
+
+        function startVideo(){
+            var videoElement = document.getElementById('videoElement');
+            var flvPlayer = flvjs.createPlayer({
+                type: 'flv',
+                isLive: true,
+                hasAudio: true,
+                hasVideo: true,
+                enableStashBuffer: true,
+                url: 'https://xl.live-play.acgvideo.com/live-xl/520658/live_12860646_332_c521e483.flv?wsSecret=778d91efcb22c588be28cb67ebe57082&wsTime=1510929009'
+            });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load();
+            flvPlayer.play();
+        }
+
+        videoElement.addEventListener('click', function(){
+            alert( '是否支持点播视频：' + flvjs.getFeatureList().mseFlvPlayback + ' 是否支持httpflv直播流：' + flvjs.getFeatureList().mseLiveFlvPlayback )
+        })
+
+        function destoryVideo(){
+            flvPlayer.pause();
+            flvPlayer.unload();
+            flvPlayer.detachMediaElement();
+            flvPlayer.destroy();
+            flvPlayer = null;
+        }
+
+        function reloadVideo(){
+            destoryVideo()
+            startVideo()
+        }
+    </script>
+    
+</body>
+
+</html>
